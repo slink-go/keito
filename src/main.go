@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"keito/cmd"
 	_ "keito/cmd/key"
+	_ "keito/cmd/parse"
 	_ "keito/cmd/token"
 )
 

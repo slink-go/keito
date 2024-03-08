@@ -31,7 +31,7 @@ const (
 )
 
 func init() {
-	keygen.Flags().IntP(cobraKeyLengthFlag, "l", -1, "key length")
+	keygen.Flags().IntP(cobraKeyLengthFlag, "l", 0, "key length")
 	_ = viper.BindPFlag(viperKeyLengthParam, keygen.Flags().Lookup(cobraKeyLengthFlag))
 	keygen.Flags().StringP(cobraKeyAlgoFlag, "a", "", "signature algorithm; supported values: hs256, hs384, hs512, rs256, rs384, rs512, es256, es384, es512, ps256, ps384, ps512")
 	_ = viper.BindPFlag(viperKeyAlgoParam, keygen.Flags().Lookup(cobraKeyAlgoFlag))

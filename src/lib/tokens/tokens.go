@@ -7,6 +7,8 @@ import (
 	"github.com/xhit/go-str2duration/v2"
 	"keito/lib/algo"
 	"keito/lib/keys"
+	"math/big"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -63,6 +65,26 @@ func Generate(algoStr, secret, issuer, subject, durationStr, claimsStr string, s
 	return tokenString, nil
 }
 
+func Parse(token string) (map[string]interface{}, error) {
+	tk, _, err := new(jwt.Parser).ParseUnverified(token, jwt.MapClaims{})
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	claims, ok := tk.Claims.(jwt.MapClaims)
+	if ok {
+		for k, v := range claims {
+			if k == "iat" || k == "exp" {
+				claims[k] = convertTs(fmt.Sprintf("%v", v))
+			}
+		}
+	} else {
+		return nil, fmt.Errorf("could not parse claims")
+	}
+	claims["algo"] = tk.Method.Alg()
+	return claims, nil
+}
+
 func getAlgo(input string) (jwt.SigningMethod, error) {
 	a := algo.Parse(input)
 	if a == algo.None {
@@ -96,4 +118,24 @@ func getClaims(input string) (map[string]string, error) {
 		result[a] = b
 	}
 	return result, nil
+}
+
+func convertTs(input string) time.Time {
+	v, err := scientificNotationToInt(input)
+	if err != nil {
+		panic(err)
+	}
+	return time.Unix(v, 0)
+}
+func scientificNotationToInt(scientificNotation string) (int64, error) {
+	flt, _, err := big.ParseFloat(scientificNotation, 10, 0, big.ToNearestEven)
+	if err != nil {
+		return 0, err
+	}
+	fltVal := fmt.Sprintf("%.0f", flt)
+	intVal, err := strconv.ParseInt(fltVal, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return intVal, nil
 }

@@ -56,7 +56,7 @@ var tokengen = &cobra.Command{
 
 func init() {
 
-	tokengen.Flags().StringP(cobraTokenAlgoFlag, "a", "", "key signing algorithm (hs256, hs384, hs512")
+	tokengen.Flags().StringP(cobraTokenAlgoFlag, "a", "", "key signing algorithm (hs256, hs384, hs512)")
 	_ = viper.BindPFlag(viperTokenAlgoParam, tokengen.Flags().Lookup(cobraTokenAlgoFlag))
 
 	tokengen.Flags().StringP(cobraTokenKeyFlag, "k", "", "signature key (optional, if not set key will be automatically generated)")
