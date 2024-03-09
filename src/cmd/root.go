@@ -20,7 +20,7 @@ Key & token generator
 
     - generate cryptographically secure random keys
     - generate JWT tokens, signed with previously generated keys
-	- parse claims from JWT tokens
+    - parse claims from JWT tokens
 
 `,
 }
