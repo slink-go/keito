@@ -7,6 +7,7 @@ Generates cryptographically secure random string of given lenght (or minimum req
 
 ```bash
 keito key -a <algorithm> -l <key length>
+
     -a, --algo <string>    [OPT] signing algorithm (applies minimum key lengh limit) 
     -l, --length <num>     [OPT] key length
 ```
@@ -15,6 +16,7 @@ keito key -a <algorithm> -l <key length>
 
 ```bash
 keito token <arguments>
+
   -a, --algo <string>      [REQ] key signing algorithm (hs256, hs384, hs512)
   -c, --claims <string>    [OPT] token claims (comma-separated key=value pairs)
   -d, --duration <string>  [REQ] token duration (i.e. 15m, 1h, 3d)
@@ -28,6 +30,7 @@ keito token <arguments>
 
 ```bash
 keito parse -t <token> [-k <key>]
+
   -t, --token <string>     [REQ] token to be parsed
   -k, --key <string>       [OPT] signing key to verify token signature
 ```
