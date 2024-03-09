@@ -24,13 +24,14 @@ func Generate(algoStr string, length int) (string, error) {
 			return util.RandomString(length)
 		}
 	}
+	minChars := a.MinKeyLength() / 8
 	if length <= 0 {
-		return util.RandomString(a.MinKeyLength() / 8)
+		return util.RandomString(minChars)
 	}
-	if a.MinKeyLength()/8 > length {
+	if minChars > length {
 		return "", fmt.Errorf(
 			"requested key length (%d) is too small for algorithm %s (%d)",
-			length, a, a.MinKeyLength(),
+			length, a, minChars,
 		)
 	}
 	return util.RandomString(length)

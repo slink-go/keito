@@ -7,6 +7,7 @@ import (
 	"github.com/xhit/go-str2duration/v2"
 	"keito/lib/algo"
 	"keito/lib/keys"
+	"keito/lib/util"
 	"math/big"
 	"strconv"
 	"strings"
@@ -53,11 +54,16 @@ func Generate(algoStr, secret, issuer, subject, durationStr, claimsStr string, s
 	}
 
 	if secret == "" {
+		secret = util.ReadKeyConfig()
+	}
+
+	if secret == "" {
 		secret, err = keys.Generate(algoStr, -1)
 		if err != nil {
 			return "", err
 		}
 	}
+
 	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", err
@@ -84,6 +90,9 @@ func Parse(token, key string) (map[string]interface{}, bool, error) {
 	claims["algo"] = tk.Method.Alg()
 
 	verified := false
+	if key == "" {
+		key = util.ReadKeyConfig()
+	}
 	if key != "" {
 		_, err = jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 			return []byte(key), nil
