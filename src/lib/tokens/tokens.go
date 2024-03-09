@@ -65,11 +65,11 @@ func Generate(algoStr, secret, issuer, subject, durationStr, claimsStr string, s
 	return tokenString, nil
 }
 
-func Parse(token string) (map[string]interface{}, error) {
+func Parse(token, key string) (map[string]interface{}, bool, error) {
 	tk, _, err := new(jwt.Parser).ParseUnverified(token, jwt.MapClaims{})
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return nil, false, err
 	}
 	claims, ok := tk.Claims.(jwt.MapClaims)
 	if ok {
@@ -79,10 +79,21 @@ func Parse(token string) (map[string]interface{}, error) {
 			}
 		}
 	} else {
-		return nil, fmt.Errorf("could not parse claims")
+		return nil, false, fmt.Errorf("could not parse claims")
 	}
 	claims["algo"] = tk.Method.Alg()
-	return claims, nil
+
+	verified := false
+	if key != "" {
+		_, err = jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+			return []byte(key), nil
+		})
+		if err == nil {
+			verified = true
+		}
+	}
+
+	return claims, verified, nil
 }
 
 func getAlgo(input string) (jwt.SigningMethod, error) {
