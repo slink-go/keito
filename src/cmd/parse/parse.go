@@ -5,8 +5,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"keito/cmd"
-	"keito/lib/printer"
 	"keito/lib/tokens"
+	"keito/lib/util"
 )
 
 const (
@@ -32,7 +32,7 @@ var tokengen = &cobra.Command{
 		} else {
 			fmt.Println()
 			fmt.Println("Claims:")
-			printer.PrintMapSorted(parsed, "  ")
+			util.PrintMapSorted(parsed, "  ")
 			if verified {
 				fmt.Println("\nSignature verified!")
 			}

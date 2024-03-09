@@ -1,4 +1,4 @@
-package printer
+package util
 
 import (
 	"fmt"
@@ -15,5 +15,5 @@ func PrintMapSorted(input map[string]interface{}, prefix string) {
 	for _, k := range keys {
 		fmt.Printf("%s%s = %v\n", prefix, k, input[k])
 	}
-	
+
 }
