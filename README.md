@@ -14,7 +14,7 @@ keito key -a <algorithm> -l <key length>
 ## Generate JWT token:
 
 ```bash
-keito token -a <...> -l <key length>
+keito token <arguments>
   -a, --algo       [REQ] key signing algorithm (hs256, hs384, hs512)
   -c, --claims     [OPT] token claims (comma-separated key=value pairs)
   -d, --duration   [REQ] token duration (i.e. 15m, 1h, 3d)
