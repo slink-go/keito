@@ -3,7 +3,7 @@ Security key &amp; token generator
 
 ## Generate secret key:
 
-Generates cryptographically secure random string of given lenght (or minimum required length for given signing algorithm)
+Generates cryptographically secure random string of given length (or minimum required length for given signing algorithm)
 
 ```bash
 keito key -a <algorithm> -l <key length>
