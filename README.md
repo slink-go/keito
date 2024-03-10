@@ -1,5 +1,6 @@
-# keito - けいと - 毛糸
-Security key &amp; token generator
+<img src="./media/keito_banner.png" width="960" />
+
+[//]: # (# keito - けいと - 毛糸)
 
 ## Generate secret key:
 
