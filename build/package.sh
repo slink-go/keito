@@ -54,7 +54,7 @@ function package_tgz() {
   ARCH=$2
   DSTPATH=$3
   DSTFILE="${PROGRAM}_${VERSION}_${OS}_${ARCH}.tgz"
-  #printf $DSTFILE > /dev/stdout
+  printf $DSTFILE > /dev/stdout
   cd "${SRCDIR}/${OS}/${ARCH}"                    && \
   tar cvfz "${DSTFILE}" ${PROGRAM}                && \
   mv "${DSTFILE}" "${DSTPATH}"
@@ -76,5 +76,5 @@ package_tgz linux armhf   "${DSTPATH}"
 package_tgz linux armhf64 "${DSTPATH}"
 package_tgz macos x86_64  "${DSTPATH}"
 package_tgz macos aarch64 "${DSTPATH}"
-package_tgz win   x86_64  "${DSTPATH}"
-package_tgz win   x86     "${DSTPATH}"
+package_zip win   x86_64  "${DSTPATH}"
+package_zip win   x86     "${DSTPATH}"
