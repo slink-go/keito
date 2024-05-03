@@ -24,20 +24,20 @@ function build() {
   mkdir -p ${DSTPATH}/bin/$6/$7/
   cd ${SRCPATH}/src
   echo "> $6.$4"
-  RES=$(GOOS=$3 GOARCH=$4 GOARM=$5 go build -buildvcs=false -ldflags "-s -w" -o ${DSTPATH}/bin/$6/$7/$2$8 .)
+  GOOS=$3 GOARCH=$4 GOARM=$5 go build -buildvcs=false -ldflags "-s -w" -o ${DSTPATH}/bin/$6/$7/$2$8 .
   if [[ "linux" == "$3" && $RES ]]; then
     mv ${DSTPATH}/bin/$6/$7/$2$8 ${DSTPATH}/bin/$6/$7/$2$8.bin
-    RES=$(upx -9 -o ${DSTPATH}/bin/$6/$7/$2$8 ${DSTPATH}/bin/$6/$7/$2$8.bin 1>/dev/null)
+    upx -9 -o ${DSTPATH}/bin/$6/$7/$2$8 ${DSTPATH}/bin/$6/$7/$2$8.bin 1>/dev/null
     rm ${DSTPATH}/bin/$6/$7/$2$8.bin
+    exit 1
   fi
-  return $RES
 }
 
 echo                                                                && \
 echo "Building keito"                                               && \
 echo                                                                && \
 cleanup                                                             && \
-cd src && go mod tidy                                               && \
+cd src && go mod tidy 1> /dev/null                                  && \
 build src keito darwin  amd64   ""    macos   x86_64  ""            && \
 build src keito darwin  arm64   ""    macos   aarch64 ""            && \
 build src keito linux   amd64   ""    linux   amd64   ""            && \
