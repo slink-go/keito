@@ -12,7 +12,13 @@ else
   shift
 fi
 
-./build/build.sh || echo "could not build keito" && exit 1
+ERROR=0
+./build/build.sh || ERROR=1
+
+if [ $ERROR == 1 ]; then
+  echo "could not build keito"
+  exit 1
+fi
 
 echo
 echo "PACKAGING keito:${VERSION}"
@@ -48,6 +54,7 @@ function package_tgz() {
   ARCH=$2
   DSTPATH=$3
   DSTFILE="${PROGRAM}_${VERSION}_${OS}_${ARCH}.tgz"
+  printf $DSTFILE > /dev/stdout
   cd "${SRCDIR}/${OS}/${ARCH}"                    && \
   tar cvfz "${DSTFILE}" ${PROGRAM}                && \
   mv "${DSTFILE}" "${DSTPATH}"
