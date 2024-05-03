@@ -54,7 +54,7 @@ function package_tgz() {
   ARCH=$2
   DSTPATH=$3
   DSTFILE="${PROGRAM}_${VERSION}_${OS}_${ARCH}.tgz"
-  printf $DSTFILE > /dev/stdout
+  #printf $DSTFILE > /dev/stdout
   cd "${SRCDIR}/${OS}/${ARCH}"                    && \
   tar cvfz "${DSTFILE}" ${PROGRAM}                && \
   mv "${DSTFILE}" "${DSTPATH}"
