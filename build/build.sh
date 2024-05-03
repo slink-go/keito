@@ -37,6 +37,7 @@ echo                                                                && \
 echo "Building keito"                                               && \
 echo                                                                && \
 cleanup                                                             && \
+cd src && go mod tidy                                               && \
 build src keito darwin  amd64   ""    macos   x86_64  ""            && \
 build src keito darwin  arm64   ""    macos   aarch64 ""            && \
 build src keito linux   amd64   ""    linux   amd64   ""            && \
