@@ -12,7 +12,7 @@ else
   shift
 fi
 
-./build/build.sh
+./build/build.sh || echo "could not build keito" && exit 1
 
 echo
 echo "PACKAGING keito:${VERSION}"
