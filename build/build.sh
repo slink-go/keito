@@ -23,19 +23,21 @@ function cleanup {
 function build() {
   mkdir -p ${DSTPATH}/bin/$6/$7/
   cd ${SRCPATH}/src
-  GOOS=$3 GOARCH=$4 GOARM=$5 go build -ldflags "-s -w" -o ${DSTPATH}/bin/$6/$7/$2$8 .
-  if [ "linux" == "$3" ]; then
+  echo "> $6.$4"
+  GOOS=$3 GOARCH=$4 GOARM=$5 go build -buildvcs=false -ldflags "-s -w" -o ${DSTPATH}/bin/$6/$7/$2$8 .
+  if [[ "linux" == "$3" && $RES ]]; then
     mv ${DSTPATH}/bin/$6/$7/$2$8 ${DSTPATH}/bin/$6/$7/$2$8.bin
-    upx -9 -o ${DSTPATH}/bin/$6/$7/$2$8 ${DSTPATH}/bin/$6/$7/$2$8.bin
+    upx -9 -o ${DSTPATH}/bin/$6/$7/$2$8 ${DSTPATH}/bin/$6/$7/$2$8.bin 1>/dev/null
     rm ${DSTPATH}/bin/$6/$7/$2$8.bin
+    exit 1
   fi
 }
 
-echo
-echo "Building keito"
-echo
-
+echo                                                                && \
+echo "Building keito"                                               && \
+echo                                                                && \
 cleanup                                                             && \
+cd src && go mod tidy 1> /dev/null                                  && \
 build src keito darwin  amd64   ""    macos   x86_64  ""            && \
 build src keito darwin  arm64   ""    macos   aarch64 ""            && \
 build src keito linux   amd64   ""    linux   amd64   ""            && \
@@ -43,8 +45,8 @@ build src keito linux   arm     7     linux   armhf   ""            && \
 build src keito linux   arm64   7     linux   armhf64 ""            && \
 build src keito windows amd64   ""    win     x86_64  ".exe"        && \
 build src keito windows 386     ""    win     x86     ".exe"        && \
-echo
-echo "Done!"
+echo                                                                && \
+echo "Done!"                                                        && \
 echo
 
 
