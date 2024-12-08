@@ -21,7 +21,7 @@ var keygen = &cobra.Command{
 			fmt.Printf("\nerror: %s\n\n", err)
 		} else {
 			if viper.GetBool(viperBase64EncodeParam) {
-				key = base64.StdEncoding.EncodeToString([]byte(key))
+				key = []byte(base64.StdEncoding.EncodeToString(key))
 			}
 			fmt.Printf("\n%s\n\n", key)
 			if viper.GetBool(viperKeySaveParam) {

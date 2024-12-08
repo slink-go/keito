@@ -25,7 +25,7 @@ var tokengen = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		parsed, verified, err := tokens.Parse(
 			viper.GetString(viperParseTokenParam),
-			viper.GetString(viperParseKeyParam),
+			[]byte(viper.GetString(viperParseKeyParam)),
 		)
 		if err != nil {
 			fmt.Printf("\nerror: %s\n\n", err)

@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func Generate(algoStr, secret, issuer, subject, durationStr, claimsStr string, singleUse bool) (string, error) {
+func Generate(algoStr, issuer, subject, durationStr, claimsStr string, secret []byte, singleUse bool) (string, error) {
 
 	sign, err := getAlgo(algoStr)
 	if err != nil {
@@ -53,25 +53,25 @@ func Generate(algoStr, secret, issuer, subject, durationStr, claimsStr string, s
 		claims[k] = v
 	}
 
-	if secret == "" {
+	if secret == nil {
 		secret = util.ReadKeyConfig()
 	}
 
-	if secret == "" {
+	if secret == nil {
 		secret, err = keys.Generate(algoStr, -1)
 		if err != nil {
 			return "", err
 		}
 	}
 
-	tokenString, err := token.SignedString([]byte(secret))
+	tokenString, err := token.SignedString(secret)
 	if err != nil {
 		return "", err
 	}
 	return tokenString, nil
 }
 
-func Parse(token, key string) (map[string]interface{}, bool, error) {
+func Parse(token string, key []byte) (map[string]interface{}, bool, error) {
 	tk, _, err := new(jwt.Parser).ParseUnverified(token, jwt.MapClaims{})
 	if err != nil {
 		fmt.Println(err)
@@ -90,12 +90,12 @@ func Parse(token, key string) (map[string]interface{}, bool, error) {
 	claims["algo"] = tk.Method.Alg()
 
 	verified := false
-	if key == "" {
+	if key == nil {
 		key = util.ReadKeyConfig()
 	}
-	if key != "" {
+	if key != nil {
 		_, err = jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
-			return []byte(key), nil
+			return key, nil
 		})
 		if err == nil {
 			verified = true
@@ -117,8 +117,9 @@ func getAlgo(input string) (jwt.SigningMethod, error) {
 		return jwt.SigningMethodHS384, nil
 	case algo.HS512:
 		return jwt.SigningMethodHS512, nil
+	default:
+		return nil, fmt.Errorf("unsupported algorithm: %s", a)
 	}
-	return nil, fmt.Errorf("unsupported algorithm: %s", a)
 }
 func getDuration(input string) (time.Duration, error) {
 	return str2duration.ParseDuration(input) // "ns", "us" (or "µs"), "ms", "s", "m", "h", "d", "w"
