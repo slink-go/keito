@@ -8,33 +8,33 @@ import (
 
 const defaultKeyLength = 16
 
-func Generate(algoStr string, length int) (string, error) {
+func Generate(algoStr string, length int) ([]byte, error) {
 
 	var a algo.Algorithm
 	var err error
 	a, err = getAlgo(algoStr)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	if a == algo.None {
 		if length <= 0 {
-			return util.RandomString(defaultKeyLength)
+			return util.RandomBytesPrintable(defaultKeyLength)
 		} else {
-			return util.RandomString(length)
+			return util.RandomBytesPrintable(length)
 		}
 	}
 	minChars := a.MinKeyLength() / 8
 	if length <= 0 {
-		return util.RandomString(minChars)
+		return util.RandomBytesPrintable(minChars)
 	}
 	if minChars > length {
-		return "", fmt.Errorf(
+		return nil, fmt.Errorf(
 			"requested key length (%d) is too small for algorithm %s (%d)",
 			length, a, minChars,
 		)
 	}
-	return util.RandomString(length)
+	return util.RandomBytesPrintable(length)
 }
 
 func getAlgo(algoStr string) (algo.Algorithm, error) {

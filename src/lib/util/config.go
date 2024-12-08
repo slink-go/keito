@@ -6,27 +6,27 @@ import (
 	"path/filepath"
 )
 
-func SaveKeyConfig(key string) {
+func SaveKeyConfig(key []byte) {
 	filename, err := getConfigFile()
 	if err != nil {
 		fmt.Printf("error saving key: %s", err)
 	}
-	if err = os.WriteFile(filename, []byte(key), 0600); err != nil {
+	if err = os.WriteFile(filename, key, 0600); err != nil {
 		fmt.Printf("error saving key: %s", err)
 	}
 }
-func ReadKeyConfig() string {
+func ReadKeyConfig() []byte {
 	filename, err := getConfigFile()
 	if err != nil {
 		//fmt.Printf("error reading saved key: %s", err)
-		return ""
+		return nil
 	}
 	buff, err := os.ReadFile(filename)
 	if err != nil {
 		//fmt.Printf("error reading saved key: %s", err)
-		return ""
+		return nil
 	}
-	return string(buff)
+	return buff
 }
 func getConfigFile() (string, error) {
 	home, err := os.UserHomeDir()

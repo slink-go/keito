@@ -39,11 +39,11 @@ var tokengen = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		key, err := tokens.Generate(
 			viper.GetString(viperTokenAlgoParam),
-			viper.GetString(viperTokenKeyParam),
 			viper.GetString(viperTokenIssuerParam),
 			viper.GetString(viperTokenSubjectParam),
 			viper.GetString(viperTokenDurationParam),
 			viper.GetString(viperTokenClaimsParam),
+			[]byte(viper.GetString(viperTokenKeyParam)),
 			viper.GetBool(viperTokenOneTimeParam),
 		)
 		if err != nil {
